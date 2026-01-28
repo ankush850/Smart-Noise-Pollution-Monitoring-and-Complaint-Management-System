@@ -1,0 +1,23 @@
+body {
+    font-family: Arial;
+    background: #f2f2f2;
+    padding: 20px;
+}
+
+form, table {
+    background: white;
+    padding: 20px;
+    width: 400px;
+}
+
+input, select, textarea, button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+}
+
+button {
+    background: green;
+    color: white;
+    border: none;
+}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='my_reports.css') }}">
+{% endblock %}
+
+{% block title %}My Reports - NoiseWatch{% endblock %}
+
+{% block content %}
+<header class="top-header">
+    <div class="header-title">
+        <h2>Report History</h2>
+        <p>Monitor the progress of your submitted noise complaints</p>
+    </div>
+</header>
+
+<div class="table-container">
+    <table class="modern-table complaints-table">
+        <thead>
+            <tr>
+                <th>Incident ID</th>
+                <th>Classification</th>
+                <th>Level</th>
+                <th>Location</th>
+                <th>Current Status</th>
+                <th>Submission Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in complaints %}
+            <tr>
+                <td style="font-weight: 700; color: var(--accent);">#INC-{{ c.id }}</td>
+                <td><span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border);">{{ c.noise_type }}</span></td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: {{ '#ef4444' if c.db_level > 85 else '#eab308' if c.db_level > 70 else '#22c55e' }};"></span>
+                        {{ c.db_level }} dB
+                    </div>
+                </td>
+                <td>{{ c.location }}</td>
+                <td><span class="badge status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td>
+                <td style="color: var(--text-secondary); font-size: 0.9rem;">{{ c.date }}</td>
+                <td>
+                    {% if c.evidence %}
+                        <a href="{{ url_for('static', filename='uploads/' + c.evidence) }}" target="_blank" style="color: var(--accent); text-decoration: none; font-size: 1.1rem;">
+                            <i class="fas fa-file-invoice"></i>
+                        </a>
+                    {% else %}
+                        <span style="color: var(--border);"><i class="fas fa-file-circle-xmark"></i></span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 5rem 0; color: var(--text-secondary);">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
+                    No active reports found in your history.
+                    <a href="/report" style="color: var(--accent); text-decoration: none; display: block; margin-top: 10px; font-weight: 700;">Start a new report →</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='my_reports.js') }}"></script>
+{% endblock %}

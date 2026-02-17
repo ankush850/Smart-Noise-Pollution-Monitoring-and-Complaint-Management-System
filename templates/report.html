@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='report.css') }}">
+{% endblock %}
+
+{% block title %}Report Noise - NoiseWatch{% endblock %}
+
+{% block content %}
+<header class="top-header">
+    <div class="header-title">
+        <h2>Submit New Report</h2>
+        <p>Document a noise disturbance in your current area</p>
+    </div>
+</header>
+
+<div class="report-container" style="max-width: 900px;">
+    <div class="card">
+        <form action="/report" method="POST" enctype="multipart/form-data">
+            <div class="form-row" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; margin-bottom: 2rem;">
+                <div class="form-group">
+                    <label class="form-label">Type of Disturbance</label>
+                    <select name="noise_type" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option value="Construction">Construction / Heavy Machinery</option>
+                        <option value="Loudspeaker">Loudspeaker / Public Event</option>
+                        <option value="Traffic">Traffic / Vehicle Exhaust</option>
+                        <option value="Industrial">Industrial / Factory Noise</option>
+                        <option value="Other">Other / Miscellaneous</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Level (dB)</label>
+                    <div style="position: relative;">
+                        <input type="number" name="db_level" class="form-control" placeholder="e.g. 85" min="30" max="150">
+                        <span style="position: absolute; right: 15px; top: 12px; color: var(--text-secondary);">dB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Precise Location</label>
+                <div style="position: relative;">
+                    <i class="fas fa-location-dot" style="position: absolute; left: 15px; top: 15px; color: var(--accent);"></i>
+                    <input type="text" name="location" class="form-control" style="padding-left: 3rem;" placeholder="Enter address or nearby landmarks..." required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Detailed Description</label>
+                <textarea name="description" class="form-control" style="min-height: 120px;" placeholder="Provide context about the duration and nature of the noise..." required></textarea>
+            </div>
+
+            <div class="form-group" style="background: rgba(255,255,255,0.02); border: 2px dashed var(--border); border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                <label class="form-label" style="display: block; margin-bottom: 1rem;">Upload Evidence (Optional)</label>
+                <input type="file" name="evidence" id="evidence" accept="image/*,audio/*" style="display: none;">
+                <label for="evidence" class="btn" style="background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary);">
+                    <i class="fas fa-cloud-upload-alt"></i> Select Photo or Audio
+                </label>
+                <p id="file-name" style="margin-top: 10px; font-size: 0.85rem; color: var(--accent);"></p>
+                <small style="display: block; margin-top: 10px; color: var(--text-secondary);">Supported formats: JPG, PNG, MP3, WAV</small>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 2.5rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem;">
+                    Submit Official Report
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='report.js') }}"></script>
+{% endblock %}

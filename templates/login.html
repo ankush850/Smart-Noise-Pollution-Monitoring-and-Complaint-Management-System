@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+{% endblock %}
+
+{% block title %}Login - NoiseWatch{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper" style="height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top right, #1e293b, #0a0c10);">
+    <div class="card auth-card" style="width: 100%; max-width: 440px; padding: 3rem; background: rgba(18, 21, 28, 0.8); backdrop-filter: blur(12px);">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), var(--indigo)); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-glow);">
+                <i class="fas fa-satellite-dish" style="font-size: 2rem; color: white;"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Portal Access</h2>
+            <p style="color: var(--text-secondary);">Enter your credentials to continue</p>
+        </div>
+        
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="name@company.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1rem;">
+                Sign In to Dashboard
+            </button>
+        </form>
+        
+        <div style="margin-top: 2rem; text-align: center; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Need an account? <a href="/register" style="color: var(--accent); text-decoration: none; font-weight: 700;">Create one now</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='login.js') }}"></script>
+{% endblock %}

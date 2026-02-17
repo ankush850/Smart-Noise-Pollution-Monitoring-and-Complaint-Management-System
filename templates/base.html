@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Noise Monitoring{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="app-wrapper">
+        {% if session.get('user_id') %}
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-satellite-dish"></i> 
+                <span>NoiseWatch</span>
+            </div>
+            <ul class="sidebar-nav">
+                {% if session.get('role') == 'admin' %}
+                    <li><a href="/admin" class="{{ 'active' if request.path == '/admin' }}"><i class="fas fa-grid-2"></i> Dashboard</a></li>
+                {% else %}
+                    <li><a href="/report" class="{{ 'active' if request.path == '/report' }}"><i class="fas fa-plus-square"></i> New Report</a></li>
+                    <li><a href="/my-reports" class="{{ 'active' if request.path == '/my-reports' }}"><i class="fas fa-folders"></i> My Reports</a></li>
+                {% endif %}
+                <li><a href="/profile" class="{{ 'active' if request.path == '/profile' }}"><i class="fas fa-user-gear"></i> Profile Settings</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="/logout" class="logout-link"><i class="fas fa-power-off"></i> Logout</a>
+            </div>
+        </aside>
+        {% endif %}
+
+        <main class="main-area" style="{{ 'margin-left: 0; padding: 0' if not session.get('user_id') }}">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">
+                                <i class="fas {{ 'fa-check-circle' if category == 'success' else 'fa-exclamation-circle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

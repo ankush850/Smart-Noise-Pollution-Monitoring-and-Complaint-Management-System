@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+{% endblock %}
+
+{% block title %}My Profile - NoiseWatch{% endblock %}
+
+{% block content %}
+<header class="top-header">
+    <div class="header-title">
+        <h2>Account Settings</h2>
+        <p>Manage your identity and preferences on the network</p>
+    </div>
+</header>
+
+<div class="auth-wrapper" style="display: flex; justify-content: center; padding-top: 2rem;">
+    <div class="card auth-card" style="width: 100%; max-width: 560px; padding: 3rem;">
+        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--indigo)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                {{ user.name[0]|upper }}
+            </div>
+            <div>
+                <h3 style="font-size: 1.4rem; margin-bottom: 4px;">{{ user.name }}</h3>
+                <span class="badge" style="background: var(--bg-surface); color: var(--accent); border: 1px solid var(--accent);">{{ user.role|upper }} ACCESS</span>
+            </div>
+        </div>
+
+        <form action="/profile" method="POST">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" value="{{ user.name }}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Primary Email Address</label>
+                <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">System Privileges</label>
+                <div style="padding: 1rem 1.2rem; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px solid var(--border); color: var(--text-secondary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-shield-halved"></i>
+                    <span>Authorized as {{ user.role|capitalize }}</span>
+                </div>
+                <small style="display: block; margin-top: 10px; color: var(--text-secondary); font-style: italic;">Contact administrator to request privilege escalation.</small>
+            </div>
+            
+            <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Synchronize Profile
+                </button>
+                <a href="/logout" style="color: #ef4444; text-decoration: none; font-weight: 700; font-size: 0.9rem;">De-authorize Session</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='profile.js') }}"></script>
+{% endblock %}
